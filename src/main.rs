@@ -16,6 +16,12 @@ use game_over::GameOverPlugin;
 #[cfg(feature = "debug")]
 use bevy_inspector_egui::WorldInspectorPlugin;
 
+// Game State => resource to hold score information
+#[derive(Default)]
+pub struct GameState {
+    pub score: u64,
+}
+
 fn camera_setup(mut commands: Commands) {
     // 2D ortho camera
     commands.spawn_bundle(OrthographicCameraBundle::new_2d());
@@ -40,6 +46,7 @@ fn main() {
             vsync: true,
             ..Default::default()
         })
+        .insert_resource(GameState { score: 0 })
         .add_plugins(DefaultPlugins)
         // States
         .add_plugin(MainMenuPlugin)

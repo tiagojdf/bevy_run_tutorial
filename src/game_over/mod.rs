@@ -2,7 +2,13 @@ use crate::*;
 use constants::AppState;
 pub struct GameOverPlugin;
 
-fn setup_game_over_system(mut commands: Commands, asset_server: Res<AssetServer>) {
+fn setup_game_over_system(
+    mut commands: Commands,
+    asset_server: Res<AssetServer>,
+    mut game_state: ResMut<GameState>,
+) {
+    let font = asset_server.load("fonts/Efforts.ttf");
+
     // Headline
     commands.spawn_bundle(TextBundle {
         /// Describes the style including flexbox settings
@@ -17,9 +23,9 @@ fn setup_game_over_system(mut commands: Commands, asset_server: Res<AssetServer>
         },
         /// Contains the text of the node
         text: Text::with_section(
-            format!("Game over! Press escape to return to main menu."),
+            format!("Game Over! You scored {} points!", game_state.score),
             TextStyle {
-                font: asset_server.load("fonts/Efforts.ttf"),
+                font: font.clone(),
                 font_size: 64.0,
                 color: Color::WHITE,
             },
@@ -30,6 +36,7 @@ fn setup_game_over_system(mut commands: Commands, asset_server: Res<AssetServer>
         ),
         ..Default::default()
     });
+    game_state.score = 0;
 }
 
 ///
